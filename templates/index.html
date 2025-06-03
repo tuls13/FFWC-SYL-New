@@ -118,6 +118,7 @@
             cardBody.className = "card-body";
             cardBody.innerHTML = `
                 <h5 class="card-title">${name}</h5>
+                ${info.river ? `<div class="text-muted" style="font-size:0.95rem; margin-bottom:8px;">River: ${info.river}</div>` : ''}
                 ${info.danger_level ? `<p class="card-text text-warning">Danger Level: ${info.danger_level} m</p>` : ''}
                 <div id="plot-${name.replace(/\W/g,'_')}" style="height:350px;"></div>
             `;

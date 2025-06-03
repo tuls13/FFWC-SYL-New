@@ -189,5 +189,86 @@
   </div>
   <!-- Bootstrap JS (optional, for interactivity) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Add this script just before the closing </body> tag -->
+  <script>
+  // Rain trail on mouse move
+  document.addEventListener('mousemove', function(e) {
+    const drop = document.createElement('div');
+    drop.className = 'cursor-rain-drop';
+    drop.style.left = (e.clientX - 1) + 'px';
+    drop.style.top = (e.clientY - 10) + 'px';
+    document.body.appendChild(drop);
+    setTimeout(() => drop.remove(), 700);
+  });
+
+  // Thunder effect on click
+  document.addEventListener('click', function(e) {
+    const thunder = document.createElement('div');
+    thunder.className = 'cursor-thunder';
+    thunder.style.left = (e.clientX - 15) + 'px';
+    thunder.style.top = (e.clientY - 40) + 'px';
+    document.body.appendChild(thunder);
+    setTimeout(() => thunder.remove(), 400);
+  });
+</script>
+<style>
+/* Rain drop for cursor */
+.cursor-rain-drop {
+  position: fixed;
+  width: 3px;
+  height: 18px;
+  background: linear-gradient(to bottom, #b3d8f6 0%, #2196f3 100%);
+  border-radius: 2px;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 9999;
+  animation: cursor-rain-fall 0.7s linear forwards;
+}
+@keyframes cursor-rain-fall {
+  0% { opacity: 0.8; transform: translateY(0);}
+  100% { opacity: 0; transform: translateY(30px);}
+}
+
+/* Thunder effect for cursor */
+.cursor-thunder {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 10000;
+  background: none;
+  animation: thunder-flash 0.4s linear forwards;
+}
+.cursor-thunder::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 6px;
+  height: 30px;
+  background: linear-gradient(to bottom, #fff700 60%, #ffd700 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 16px 6px #fff70099;
+  transform: skew(-15deg);
+}
+.cursor-thunder::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 10px solid #fff700;
+  filter: blur(1px);
+  transform: skew(-10deg);
+}
+@keyframes thunder-flash {
+  0% { opacity: 1; filter: brightness(1.5);}
+  60% { opacity: 1; filter: brightness(2);}
+  100% { opacity: 0; filter: brightness(1);}
+}
+</style>
 </body>
 </html>

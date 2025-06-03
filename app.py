@@ -65,9 +65,17 @@ def fetch_data():
                 continue
 
         station_data.sort(key=lambda x: x["date"])
+        # Find river name from STATION_MAPPING
+        river = None
+        for s in STATION_MAPPING:
+            if s.get("name") == station_name:
+                river = s.get("river")
+                break
+
         all_data[station_name] = {
             "data": station_data,
-            "danger_level": danger_level
+            "danger_level": danger_level,
+            "river": river
         }
 
     return all_data
@@ -86,6 +94,3 @@ def index():
     all_data = fetch_data_cached()
     current_date = datetime.now().strftime("%B %d, %Y")
     return render_template("index.html", station_data=all_data, current_date=current_date)
-
-if __name__ == "__main__":
-    app.run(debug=True)

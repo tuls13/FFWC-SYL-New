@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 import plotly.graph_objs as go
 import plotly.io as pio
+import time
 
 from stations import STATION_MAPPING
 
@@ -24,6 +25,9 @@ ALLOWED_STATIONS = [
     "Derai", "Khaliajuri", "Manu-RB", "Moulvibazar", "Narsingdi", "Sheola",
     "Sherpur-Sylhet", "Sunamganj", "Sylhet"
 ]
+
+CACHE = {}
+CACHE_TIMEOUT = 300  # seconds
 
 def fetch_data():
     resp = requests.get(API_URL)
@@ -68,9 +72,18 @@ def fetch_data():
 
     return all_data
 
+def fetch_data_cached():
+    now = time.time()
+    if "data" in CACHE and now - CACHE["time"] < CACHE_TIMEOUT:
+        return CACHE["data"]
+    data = fetch_data()
+    CACHE["data"] = data
+    CACHE["time"] = now
+    return data
+
 @app.route("/", methods=["GET"])
 def index():
-    all_data = fetch_data()
+    all_data = fetch_data_cached()
 
     station_plots = []
     for station_name, station_info in all_data.items():
@@ -146,6 +159,3 @@ def index():
         })
 
     return render_template("index.html", station_plots=station_plots)
-
-if __name__ == "__main__":
-    app.run()

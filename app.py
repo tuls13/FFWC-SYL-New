@@ -86,3 +86,6 @@ def index():
     all_data = fetch_data_cached()
     current_date = datetime.now().strftime("%B %d, %Y")
     return render_template("index.html", station_data=all_data, current_date=current_date)
+
+if __name__ == "__main__":
+    app.run(debug=True)

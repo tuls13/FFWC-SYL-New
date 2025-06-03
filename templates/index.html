@@ -15,7 +15,20 @@
             overflow-x: hidden;
         }
         h1 {
-            color: #333;
+            color: #0d47a1;
+            font-weight: bold;
+            text-shadow: 0 2px 8px #b3d8f6, 0 1px 0 #fff;
+            letter-spacing: 1px;
+        }
+        .date-highlight {
+            font-size: 1.25rem;
+            color: #1565c0;
+            font-weight: bold;
+            background: rgba(255,255,255,0.85);
+            border-radius: 8px;
+            padding: 4px 18px;
+            display: inline-block;
+            box-shadow: 0 2px 8px #b3d8f6;
         }
         .info-box, .card {
             margin-bottom: 15px;
@@ -63,15 +76,17 @@
         }
         .rain-drop {
             position: absolute;
-            width: 2px;
-            height: 30px;
-            background: rgba(30, 144, 255, 0.18);
-            border-radius: 1px;
-            animation: rain-fall 1.2s linear infinite;
+            width: 3px;
+            height: 48px;
+            background: linear-gradient(to bottom, #2196f3 60%, #b3d8f6 100%);
+            border-radius: 2px;
+            opacity: 0.55;
+            animation: rain-fall 0.95s linear infinite;
+            box-shadow: 0 0 8px 1px #2196f366;
         }
         @keyframes rain-fall {
-            0% { transform: translateY(-40px); }
-            100% { transform: translateY(100vh); }
+            0% { transform: translateY(-40px); opacity: 0.7;}
+            100% { transform: translateY(100vh); opacity: 0.2;}
         }
     </style>
 </head>
@@ -84,7 +99,7 @@
   </div>
   <div class="container my-4">
     <h1 class="display-5 text-center mb-2">FCP | Sylhet Region | Daily Water Level Forecast</h1>
-    <p class="text-center text-muted"><em>{{ current_date }}</em></p>
+    <p class="text-center mb-4"><span class="date-highlight">{{ current_date }}</span></p>
     <div id="plots" class="row"></div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
@@ -191,14 +206,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Add this script just before the closing </body> tag -->
   <script>
-  // Animated rain background
+  // Animated rain background (more prominent)
   const rainBg = document.querySelector('.rain');
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 80; i++) {
     const drop = document.createElement('div');
     drop.className = 'rain-drop';
     drop.style.left = Math.random() * 100 + 'vw';
     drop.style.animationDelay = (Math.random() * 1.2) + 's';
-    drop.style.height = (15 + Math.random() * 25) + 'px';
+    drop.style.height = (30 + Math.random() * 35) + 'px';
     rainBg.appendChild(drop);
   }
 
@@ -206,7 +221,7 @@
   let lastRainTime = 0;
   document.addEventListener('mousemove', function(e) {
     const now = Date.now();
-    if (now - lastRainTime < 60) return; // Only allow every 60ms
+    if (now - lastRainTime < 80) return; // Only allow every 80ms
     lastRainTime = now;
     const drop = document.createElement('div');
     drop.className = 'cursor-rain-drop';
@@ -234,13 +249,13 @@
   height: 18px;
   background: linear-gradient(to bottom, #b3d8f6 0%, #2196f3 100%);
   border-radius: 2px;
-  opacity: 0.35; /* more transparent */
+  opacity: 0.28; /* even more transparent */
   pointer-events: none;
   z-index: 9999;
   animation: cursor-rain-fall 0.7s linear forwards;
 }
 @keyframes cursor-rain-fall {
-  0% { opacity: 0.5; transform: translateY(0);}
+  0% { opacity: 0.4; transform: translateY(0);}
   100% { opacity: 0; transform: translateY(30px);}
 }
 

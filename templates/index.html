@@ -39,21 +39,43 @@
 </head>
 <body>
     <h1>Water Level Forecast</h1>
+    <div id="plots"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        const stationData = {{ station_data|tojson }};
+        for (const [name, info] of Object.entries(stationData)) {
+            const div = document.createElement('div');
+            div.innerHTML = `<div class="info-box"><strong>${name}</strong>${info.danger_level ? `<br>Danger Level: ${info.danger_level} m` : ''}</div><div id="plot-${name.replace(/\W/g,'_')}"></div><hr>`;
+            document.getElementById('plots').appendChild(div);
 
-    {% for plot in station_plots %}
-        <div class="info-box">
-            <strong>{{ plot.name }}</strong>
-            {% if plot.danger_level %}
-                <br>Danger Level: {{ plot.danger_level }} m
-            {% endif %}
-        </div>
-        {% if plot.plot %}
-            {{ plot.plot|safe }}
-        {% else %}
-            <p>No data available for {{ plot.name }}.</p>
-        {% endif %}
-        <hr>
-    {% endfor %}
-
+            if (info.data && info.data.length) {
+                const dates = info.data.map(d => d.date);
+                const levels = info.data.map(d => d.water_level);
+                const traces = [{
+                    x: dates,
+                    y: levels,
+                    mode: 'lines+markers',
+                    name: 'Water Level'
+                }];
+                if (info.danger_level !== null) {
+                    traces.push({
+                        x: dates,
+                        y: Array(dates.length).fill(info.danger_level),
+                        mode: 'lines',
+                        name: 'Danger Level',
+                        line: {color: 'orange', dash: 'dash'}
+                    });
+                }
+                Plotly.newPlot(`plot-${name.replace(/\W/g,'_')}`, traces, {
+                    title: `Water Level Data for ${name}`,
+                    xaxis: {title: 'Date'},
+                    yaxis: {title: 'Water Level (m)'},
+                    height: 500
+                });
+            } else {
+                div.innerHTML += `<p>No data available for ${name}.</p>`;
+            }
+        }
+    </script>
 </body>
 </html>

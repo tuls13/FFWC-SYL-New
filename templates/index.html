@@ -102,7 +102,9 @@
                 // Format dates as 'DD Mon' (e.g., '20 Jun')
                 const shortDates = dates.map(dateStr => {
                     const d = new Date(dateStr);
-                    return `${d.getDate()} ${d.toLocaleString('en-US', { month: 'short' })}`;
+                    const day = d.getDate().toString().padStart(2, '0');
+                    const month = d.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+                    return `${day}-${month}`;
                 });
                 Plotly.newPlot(`plot-${name.replace(/\W/g,'_')}`, traces, {
                     title: '',

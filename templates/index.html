@@ -99,11 +99,17 @@
                 }
                 // Find the latest date
                 const latestDate = dates[dates.length - 1];
+                // Format dates as 'DD Mon' (e.g., '20 Jun')
+                const shortDates = dates.map(dateStr => {
+                    const d = new Date(dateStr);
+                    return `${d.getDate()} ${d.toLocaleString('en-US', { month: 'short' })}`;
+                });
                 Plotly.newPlot(`plot-${name.replace(/\W/g,'_')}`, traces, {
                     title: '',
                     xaxis: {
                         title: 'Date',
-                        tickvals: dates
+                        tickvals: dates,
+                        ticktext: shortDates
                     },
                     yaxis: {title: 'Water Level (m)'},
                     height: 350,

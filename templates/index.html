@@ -65,6 +65,24 @@
                         name: 'Danger Level',
                         line: {color: 'orange', dash: 'dash'}
                     });
+
+                    // Add shading above danger level if any value exceeds it
+                    const yMax = Math.max(...levels, info.danger_level);
+                    if (yMax > info.danger_level) {
+                        traces.push({
+                            x: [...dates, ...dates.slice().reverse()],
+                            y: [
+                                ...Array(dates.length).fill(yMax),
+                                ...Array(dates.length).fill(info.danger_level).reverse()
+                            ],
+                            fill: 'toself',
+                            fillcolor: 'rgba(255,165,0,0.15)', // light transparent orange
+                            line: {color: 'rgba(255,255,255,0)'},
+                            hoverinfo: 'skip',
+                            showlegend: false,
+                            name: 'Above Danger Level'
+                        });
+                    }
                 }
                 Plotly.newPlot(`plot-${name.replace(/\W/g,'_')}`, traces, {
                     title: `Water Level Data for ${name}`,

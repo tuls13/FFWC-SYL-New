@@ -191,8 +191,23 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Add this script just before the closing </body> tag -->
   <script>
-  // Rain trail on mouse move
+  // Animated rain background
+  const rainBg = document.querySelector('.rain');
+  for (let i = 0; i < 40; i++) {
+    const drop = document.createElement('div');
+    drop.className = 'rain-drop';
+    drop.style.left = Math.random() * 100 + 'vw';
+    drop.style.animationDelay = (Math.random() * 1.2) + 's';
+    drop.style.height = (15 + Math.random() * 25) + 'px';
+    rainBg.appendChild(drop);
+  }
+
+  // Rain trail on mouse move (less frequent, more transparent)
+  let lastRainTime = 0;
   document.addEventListener('mousemove', function(e) {
+    const now = Date.now();
+    if (now - lastRainTime < 60) return; // Only allow every 60ms
+    lastRainTime = now;
     const drop = document.createElement('div');
     drop.className = 'cursor-rain-drop';
     drop.style.left = (e.clientX - 1) + 'px';
@@ -210,8 +225,8 @@
     document.body.appendChild(thunder);
     setTimeout(() => thunder.remove(), 400);
   });
-</script>
-<style>
+  </script>
+  <style>
 /* Rain drop for cursor */
 .cursor-rain-drop {
   position: fixed;
@@ -219,13 +234,13 @@
   height: 18px;
   background: linear-gradient(to bottom, #b3d8f6 0%, #2196f3 100%);
   border-radius: 2px;
-  opacity: 0.7;
+  opacity: 0.35; /* more transparent */
   pointer-events: none;
   z-index: 9999;
   animation: cursor-rain-fall 0.7s linear forwards;
 }
 @keyframes cursor-rain-fall {
-  0% { opacity: 0.8; transform: translateY(0);}
+  0% { opacity: 0.5; transform: translateY(0);}
   100% { opacity: 0; transform: translateY(30px);}
 }
 
@@ -269,6 +284,6 @@
   60% { opacity: 1; filter: brightness(2);}
   100% { opacity: 0; filter: brightness(1);}
 }
-</style>
+  </style>
 </body>
 </html>

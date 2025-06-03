@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Water Level Plot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select {
+            padding: 5px;
+            font-size: 14px;
+        }
+        .info-box {
+            margin-bottom: 15px;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Water Level Forecast</h1>
+
+    {% for plot in station_plots %}
+        <div class="info-box">
+            <strong>{{ plot.name }}</strong>
+            {% if plot.danger_level %}
+                <br>Danger Level: {{ plot.danger_level }} m
+            {% endif %}
+        </div>
+        {% if plot.plot %}
+            {{ plot.plot|safe }}
+        {% else %}
+            <p>No data available for {{ plot.name }}.</p>
+        {% endif %}
+        <hr>
+    {% endfor %}
+
+</body>
+</html>

@@ -97,12 +97,28 @@
                         });
                     }
                 }
+                // Find the latest date
+                const latestDate = dates[dates.length - 1];
                 Plotly.newPlot(`plot-${name.replace(/\W/g,'_')}`, traces, {
                     title: '',
                     xaxis: {title: 'Date'},
                     yaxis: {title: 'Water Level (m)'},
                     height: 350,
-                    margin: { t: 20, r: 20, b: 40, l: 50 }
+                    margin: { t: 20, r: 20, b: 40, l: 50 },
+                    annotations: [{
+                        x: latestDate,
+                        y: Math.max(...levels),
+                        xref: 'x',
+                        yref: 'y',
+                        text: 'Latest Forecast',
+                        showarrow: true,
+                        arrowhead: 7,
+                        ax: 0,
+                        ay: -40,
+                        bgcolor: '#fff3cd',
+                        bordercolor: '#ffa500',
+                        font: { color: '#856404' }
+                    }]
                 }, {responsive: true});
             } else {
                 cardBody.innerHTML += `<p class="text-danger">No data available for ${name}.</p>`;

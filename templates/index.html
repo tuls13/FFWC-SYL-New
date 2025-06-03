@@ -10,6 +10,9 @@
             font-family: Arial, sans-serif;
             padding: 20px;
             background: #f8fafc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
         h1 {
             color: #333;
@@ -30,17 +33,45 @@
             height: auto;
             border: 1px solid #ccc;
         }
+        .bg-sky {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, #b3d8f6 0%, #e0f7fa 100%);
+            opacity: 0.7;
+        }
         .cloud {
-            /* Remove cloud background effect */
-            display: none;
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: cloud-move 60s linear infinite;
+        }
+        .cloud1 { width: 120px; height: 60px; top: 60px; left: 10vw; animation-delay: 0s; }
+        .cloud2 { width: 180px; height: 80px; top: 120px; left: 60vw; animation-delay: 10s; }
+        .cloud3 { width: 90px; height: 40px; top: 200px; left: 35vw; animation-delay: 25s; }
+        @keyframes cloud-move {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(40vw); }
         }
         .rain {
-            /* Remove rain background effect */
-            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 1;
         }
-        .sun {
-            /* Remove sun background effect */
-            display: none;
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 30px;
+            background: rgba(30, 144, 255, 0.18);
+            border-radius: 1px;
+            animation: rain-fall 1.2s linear infinite;
+        }
+        @keyframes rain-fall {
+            0% { transform: translateY(-40px); }
+            100% { transform: translateY(100vh); }
         }
     </style>
 </head>

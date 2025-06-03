@@ -74,15 +74,21 @@
             pointer-events: none;
             z-index: 1;
         }
+        @keyframes rain-fall {
+            0% { transform: translateY(-40px); opacity: 0.7;}
+            100% { transform: translateY(100vh); opacity: 0.2;}
+        }
         .rain-drop {
             position: absolute;
-            width: 2px; /* thinner */
-            height: 38px; /* a bit shorter */
+            width: 2px;
+            height: 38px;
             background: linear-gradient(to bottom, #2196f3 40%, #b3d8f6 100%);
             border-radius: 2px;
-            opacity: 0.22; /* more transparent */
+            opacity: 0.22;
             animation: rain-fall 1.1s linear infinite;
             box-shadow: 0 0 6px 0 #2196f322;
+            /* Ensure each drop animates independently */
+            will-change: transform, opacity;
         }
     </style>
 </head>
@@ -202,14 +208,15 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Add this script just before the closing </body> tag -->
   <script>
-  // Animated rain background (subtle)
+  // Animated rain background (subtle & moving)
   const rainBg = document.querySelector('.rain');
   rainBg.innerHTML = '';
-  for (let i = 0; i < 60; i++) { // fewer drops
+  for (let i = 0; i < 60; i++) {
     const drop = document.createElement('div');
     drop.className = 'rain-drop';
     drop.style.left = Math.random() * 100 + 'vw';
-    drop.style.animationDelay = (Math.random() * 1.2) + 's';
+    drop.style.animationDelay = (Math.random() * 1.1) + 's';
+    drop.style.animationDuration = (0.9 + Math.random() * 0.7) + 's';
     drop.style.height = (22 + Math.random() * 22) + 'px';
     rainBg.appendChild(drop);
   }

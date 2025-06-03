@@ -27,7 +27,7 @@ ALLOWED_STATIONS = [
 ]
 
 CACHE = {}
-CACHE_TIMEOUT = 300  # seconds
+CACHE_TIMEOUT = 1800  # seconds (30 minutes)
 
 def fetch_data():
     resp = requests.get(API_URL)
@@ -158,4 +158,4 @@ def index():
             "danger_level": danger_level
         })
 
-    return render_template("index.html", station_plots=station_plots)
+    return render_template("index.html", station_data=all_data)
